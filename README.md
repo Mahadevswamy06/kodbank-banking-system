@@ -66,7 +66,7 @@
    ```
 
 4. **Access the App**:
-   Open `http://localhost:9090` in your browser.
+   Visit [kodbank-banking-system-22iq.vercel.app](https://kodbank-banking-system-22iq.vercel.app) or open `http://localhost:8080` for local development.
 
 ---
 

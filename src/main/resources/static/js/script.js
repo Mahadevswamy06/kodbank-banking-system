@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => toast.remove(), 4000);
     };
 
-    // Ensure we point to the correct Backend port (9090) during development
+    // Ensure we point to the correct Backend port (8080) during development
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const API_BASE = (isLocal && window.location.port !== '9090') ? 'http://localhost:9090' : window.location.origin;
+    const API_BASE = (isLocal && window.location.port !== '8080')
+        ? 'http://localhost:8080'
+        : (isLocal ? '' : 'https://kodbank-banking-system-22iq.vercel.app');
 
     // --- REGISTRATION LOGIC ---
     const registerForm = document.getElementById('register-form');

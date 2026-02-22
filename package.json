@@ -1,6 +1,7 @@
 {
   "name": "kodbank",
   "version": "1.0.0",
+  "homepage": "https://kodbank-banking-system-22iq.vercel.app",
   "private": true,
   "scripts": {
     "start": "node index.js",
