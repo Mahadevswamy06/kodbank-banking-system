@@ -9,11 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => toast.remove(), 4000);
     };
 
-    // Simplified API_BASE to support local network testing (other devices)
+    // Automatic URL detection: Works on Localhost and Vercel automatically
     const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const API_BASE = (isDevelopment && window.location.port !== '9090')
-        ? 'http://localhost:9090'
-        : ''; // Use relative paths if already on the server or on a network IP
+    const API_BASE = isDevelopment ? `http://${window.location.hostname}:9090` : window.location.origin;
 
     // --- REGISTRATION LOGIC ---
     const registerForm = document.getElementById('register-form');

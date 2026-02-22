@@ -37,62 +37,85 @@ app.use(express.json());
 // Serve static files from the static directory
 app.use(express.static(path.join(__dirname, 'src/main/resources/static')));
 
+function loadUsersFromFile() {
+    if (fs.existsSync(USERS_FILE)) {
+        try {
+            users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+            return users;
+        } catch (e) {
+            console.error("Database reading error:", e);
+            return users;
+        }
+    }
+    return users;
+}
+
 // Auth Routes
 app.get('/api/auth/check-username', (req, res) => {
+    loadUsersFromFile();
     const { username } = req.query;
     if (!username) return res.json(true);
-    // Case-insensitive check
-    const exists = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+    const exists = users.find(u => u.username.toLowerCase() === username.toLowerCase().trim());
     res.json(!exists);
 });
 
 app.post('/api/auth/register', (req, res) => {
-    const { username, password } = req.body;
+    loadUsersFromFile(); // Always sync before modification
+    const username = (req.body.username || '').trim();
+    const password = (req.body.password || '');
 
     if (!username || !password) {
         return res.status(400).send('Username and Password are required');
     }
 
-    // Check if user already exists (Case-insensitive for security)
     const existingUser = users.find(u => u.username.toLowerCase() === username.toLowerCase());
 
     if (existingUser) {
-        console.log(`Registration blocked: ${username} already exists.`);
+        console.log(`⚠️ Blocked: Duplicate registration for "${username}"`);
         return res.status(400).send('User ID already exists! Please use a different name.');
     }
 
     const newUser = {
         ...req.body,
+        username: username, // Save the trimmed version
         balance: 100000,
         createdAt: new Date().toISOString()
     };
 
     users.push(newUser);
-    saveUsers(); // Permanently save to the JSON database
+    saveUsers();
 
-    console.log(`✅ Success: New user "${username}" stored permanently.`);
-    res.send('Registered Successfully! You can now login anytime.');
+    console.log(`✨ REGISTERED: "${username}" from ${req.ip}`);
+    res.send('Registered Successfully! You can now login from any device on this network.');
 });
 
 app.post('/api/auth/login', (req, res) => {
-    const username = (req.body.username || '').trim();
+    // 1. Clean the input (remove spaces, ignore case)
+    const username = (req.body.username || '').trim().toLowerCase();
     const password = (req.body.password || '');
 
-    console.log(`Login attempt: [${username}]`);
+    console.log(`📡 Network Login Attempt: [${username}] from device: ${req.ip}`);
 
-    const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+    // 2. Refresh memory from database file to be 100% sure
+    if (fs.existsSync(USERS_FILE)) {
+        try {
+            users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+        } catch (e) { console.error("DB Sync Error:", e); }
+    }
+
+    const user = users.find(u => u.username.toLowerCase() === username);
 
     if (user) {
         if (user.password === password) {
-            console.log(`✅ Login successful: ${username}`);
-            res.json({ token: user.username, message: 'Logged in' });
+            console.log(`✅ ACCESS GRANTED: ${username}`);
+            res.json({ token: user.username, message: 'Logged in successfully' });
         } else {
-            console.log(`❌ Login failed: ${username} (Wrong password)`);
-            res.status(401).send('Invalid credentials');
+            console.log(`❌ DENIED: ${username} (Password Mismatch)`);
+            res.status(401).send('Invalid password');
         }
     } else {
-        console.log(`❌ Login failed: ${username} (User not found)`);
-        res.status(401).send('Invalid credentials');
+        console.log(`❌ DENIED: [${username}] (User ID not found in database)`);
+        res.status(401).send('User ID does not exist');
     }
 });
 

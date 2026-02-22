@@ -31,5 +31,14 @@
     "phone": "7676452280",
     "balance": 100000,
     "createdAt": "2026-02-22T18:40:48.340Z"
+  },
+  {
+    "username": "vd18",
+    "fullname": "xxx",
+    "email": "mahadevswamy082@gmail.com",
+    "password": "vd18",
+    "phone": "7676452280",
+    "balance": 100000,
+    "createdAt": "2026-02-22T18:55:00.683Z"
   }
 ]
