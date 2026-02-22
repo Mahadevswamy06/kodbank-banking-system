@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Kodbank</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body class="dashboard-body">
+    <canvas id="bg-3d-canvas"></canvas>
+
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-university"></i>
+                <span>Kodbank</span>
+            </div>
+            <nav class="nav-links">
+                <div class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="document.getElementById('transfer-btn').click()">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Transfer</span>
+                </div>
+                <div class="nav-item" onclick="document.getElementById('receive-btn').click()">
+                    <i class="fas fa-qrcode"></i>
+                    <span>My QR</span>
+                </div>
+                <div class="nav-item" onclick="document.getElementById('history-btn').click()">
+                    <i class="fas fa-history"></i>
+                    <span>Transactions</span>
+                </div>
+                <div class="nav-item" id="sidebar-profile-btn">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </div>
+            </nav>
+            <div class="nav-item" id="sidebar-logout-btn" style="color: #f87171; margin-top: auto;">
+                <i class="fas fa-power-off"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="page-title">Dashboard Overview</div>
+                <div id="user-welcome" class="glass-card"
+                    style="padding: 10px 20px; display: flex; align-items: center; gap: 12px; max-width: none; border-radius: 15px; cursor: pointer;">
+                    <i class="fas fa-user-circle" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                    <div style="text-align: left;">
+                        <span id="display-username" style="font-weight: 600; color: white;">User</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- Balance Widget -->
+                <div class="glass-card card-span-4" style="padding: 30px; border-radius: 25px;">
+                    <h3
+                        style="margin: 0; font-size: 0.9rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">
+                        Total Balance</h3>
+                    <div class="loader" id="balance-loader"></div>
+                    <div id="balance-display" style="display: none; margin-top: 15px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: white;">
+                            <span class="currency">₹</span><span id="amount-value">0</span>
+                        </div>
+                        <p style="color: #4ade80; font-size: 0.8rem; margin-top: 5px;"><i
+                                class="fas fa-check-circle"></i> Securely Verified</p>
+                    </div>
+                    <button id="check-balance-btn" class="btn-glow" style="margin-top: 20px; width: 100%;">Check
+                        Balance</button>
+                </div>
+
+                <!-- Quick Actions Grid -->
+                <div class="glass-card card-span-8" style="padding: 30px; border-radius: 25px;">
+                    <h3 style="margin-bottom: 20px; font-size: 1rem;">Quick Services</h3>
+                    <div class="quick-actions-grid" style="margin-top: 0; padding: 0; background: none; border: none;">
+                        <button id="transfer-btn" class="action-card">
+                            <div class="icon-circle bg-blue" style="width: 60px; height: 60px;"><i
+                                    class="fas fa-paper-plane"></i></div>
+                            <span style="font-size: 0.85rem; margin-top: 10px;">Send</span>
+                        </button>
+                        <button id="receive-btn" class="action-card">
+                            <div class="icon-circle bg-green" style="width: 60px; height: 60px;"><i
+                                    class="fas fa-qrcode"></i></div>
+                            <span style="font-size: 0.85rem; margin-top: 10px;">Receive</span>
+                        </button>
+                        <button id="history-btn" class="action-card">
+                            <div class="icon-circle bg-purple" style="width: 60px; height: 60px;"><i
+                                    class="fas fa-history"></i></div>
+                            <span style="font-size: 0.85rem; margin-top: 10px;">History</span>
+                        </button>
+                        <button id="logout-btn" class="action-card" style="display: none;">Logout</button>
+                        <!-- Hidden but kept for script ID compatibility -->
+                        <div class="action-card" id="bank-transfer-btn">
+                            <div class="icon-circle bg-red" style="width: 60px; height: 60px;"><i
+                                    class="fas fa-university"></i></div>
+                            <span style="font-size: 0.85rem; margin-top: 10px;">Bank</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Bento -->
+                <div class="glass-card card-span-12" style="border-radius: 25px; padding: 30px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0;">Bills & Recharges</h3>
+                        <span style="color: var(--primary-color); font-size: 0.8rem; cursor: pointer;">View All <i
+                                class="fas fa-arrow-right"></i></span>
+                    </div>
+                    <div class="service-grid">
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #4ade80;"><i
+                                    class="fas fa-mobile-alt"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">Mobile</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #fbbf24;"><i
+                                    class="fas fa-lightbulb"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">Electricity</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #a78bfa;"><i
+                                    class="fas fa-tv"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">DTH</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #f87171;"><i
+                                    class="fas fa-tint"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">Water</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #00d2ff;"><i
+                                    class="fas fa-wifi"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">Broadband</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #f472b6;"><i
+                                    class="fas fa-credit-card"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">Credit Card</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"
+                                style="width: 55px; height: 55px; border-radius: 15px; color: #94a3b8;"><i
+                                    class="fas fa-ellipsis-h"></i></div>
+                            <span class="service-label" style="font-size: 0.8rem;">More</span>
+                        </div>
+                        <div id="self-transfer-btn" style="display: none;"></div> <!-- ID Placeholder -->
+                    </div>
+                </div>
+
+                <!-- History Section -->
+                <div id="history-section" class="glass-card card-span-12"
+                    style="display: none; border-radius: 25px; padding: 30px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="margin: 0;"><i class="fas fa-list"></i> Transaction History</h2>
+                        <button id="close-history" class="btn-glow"
+                            style="max-width: 100px; padding: 10px 15px;">Close</button>
+                    </div>
+                    <div class="table-container" style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--glass-border);">
+                                    <th style="padding: 15px;">Date</th>
+                                    <th style="padding: 15px;">To/From</th>
+                                    <th style="padding: 15px;">Description</th>
+                                    <th style="padding: 15px;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body">
+                                <!-- Transactions will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals (Moved Outside for better layering) -->
+
+    <!-- Receive / QR Modal -->
+    <div id="receive-modal" class="modal-overlay" style="display: none;">
+        <div class="glass-card modal-content"
+            style="max-width: 400px; text-align: center; border: 1px solid #5f259f; background: rgba(15, 23, 42, 0.95);">
+            <div
+                style="background: #5f259f; margin: -40px -40px 20px -40px; padding: 20px; border-radius: 20px 20px 0 0; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fas fa-university" style="color: white; font-size: 1.5rem;"></i>
+                <h2
+                    style="margin: 0; color: white !important; -webkit-text-fill-color: white !important; background: none;">
+                    PhonePe Accepted Here</h2>
+            </div>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">Scan & Pay Using PhonePe App</p>
+            <div id="qrcode-container"
+                style="background: white; padding: 10px; border-radius: 12px; display: inline-block; margin-bottom: 20px; line-height: 0;">
+                <img id="qr-image"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=90196209@ax&pn=Mahadev%20Y&cu=INR"
+                    alt="QR Code" style="width: 250px; height: 250px; border-radius: 5px;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h3 id="display-name-qr" style="color: #ffffff; margin: 0; font-size: 1.3rem;">Mahadev Y</h3>
+                <p style="color: #00d2ff; margin-top: 8px; font-weight: bold; font-size: 1.1rem;">UPI ID: 90196209@ax
+                </p>
+            </div>
+            <button id="close-receive" class="btn-glow"
+                style="background: #5f259f; border: none; width: 100%;">Close</button>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div id="transfer-modal" class="modal-overlay" style="display: none;">
+        <div class="glass-card modal-content"
+            style="max-width: 400px; position: relative; background: rgba(15, 23, 42, 0.95);">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-exchange-alt"></i> Send Money</h2>
+            <form id="transfer-form">
+                <div class="input-group">
+                    <input type="text" id="receiver-name" required>
+                    <label>Receiver Username</label>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="transfer-amount" required>
+                    <label>Amount (₹)</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="transfer-desc">
+                    <label>Description (Optional)</label>
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button type="button" id="cancel-transfer" class="btn-glow"
+                        style="background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); flex: 1;">Cancel</button>
+                    <button type="submit" class="btn-glow" style="flex: 1;">Send Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Info Modal -->
+    <div id="user-info-modal" class="modal-overlay" style="display: none;">
+        <div class="glass-card modal-content"
+            style="max-width: 400px; position: relative; background: rgba(15, 23, 42, 0.95);">
+            <h2 style="margin-bottom: 25px;"><i class="fas fa-user-shield"></i> User Profile</h2>
+            <div class="user-details">
+                <div class="detail-row">
+                    <span class="detail-label">Full Name</span>
+                    <span class="detail-value" id="info-fullname">Loading...</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Username</span>
+                    <span class="detail-value" id="info-username">Loading...</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email Address</span>
+                    <span class="detail-value" id="info-email">Loading...</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phone Number</span>
+                    <span class="detail-value" id="info-phone">Loading...</span>
+                </div>
+            </div>
+            <button id="close-info" class="btn-glow" style="margin-top: 25px; width: 100%;">Close</button>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <footer class="credit-footer">
+        <span class="credit-text">Designed & Developed by</span>
+        <div class="credit-name">
+            <span>M</span><span>a</span><span>h</span><span>a</span><span>d</span><span>e</span><span>v</span>
+            <span class="space"></span>
+            <span>S</span><span>w</span><span>a</span><span>m</span><span>y</span>
+        </div>
+    </footer>
+
+    <script src="js/animation.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+# Java
+target/
+*.class
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.iml
+
+# Logs
+*.log
+run_log.txt
+startup.log
+build_log.txt
+compile_error.log
+compile_error_utf8.log
+compile_fix_verify.log
+compile_log.txt
+compile_log_2.txt
+
+# OS
+.DS_Store
+Thumbs.db
