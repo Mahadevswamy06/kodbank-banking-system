@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -9,46 +8,17 @@ const app = express();
 const port = process.env.PORT || 9090;
 const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 
-// Ensure data directory exists for local storage
-if (!fs.existsSync(path.join(__dirname, 'data'))) {
-    fs.mkdirSync(path.join(__dirname, 'data'));
-}
+// --- SHARED CLOUD DATABASE CONFIG ---
+// This allows your Phone and Laptop to share the same user data instantly
+const MONGODB_URI = "mongodb+srv://kodbank_shared:BankPassword123@cluster0.pjtzy.mongodb.net/kodbank?retryWrites=true&w=majority";
+const useMongoDB = true; // Force Cloud-Mode for Multi-Device support
 
-// --- DATABASE STATE ---
-let useMongoDB = false;
-let usersMemory = []; // Fallback memory
-
-// Load initial users from local file or defaults
-if (fs.existsSync(USERS_FILE)) {
-    try {
-        usersMemory = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
-    } catch (e) { console.error("Local DB load error:", e); }
-}
-
-// Ensure at least Admin exists
-if (!usersMemory.find(u => u.username === 'admin')) {
-    usersMemory.push({
-        username: 'admin',
-        password: 'password123',
-        fullname: 'Demo Admin',
-        email: 'admin@kodbank.com',
-        balance: 100000,
-        createdAt: new Date().toISOString()
+mongoose.connect(MONGODB_URI)
+    .then(() => console.log('✅ UNIVERSAL CLOUD SYNC: ACTIVE'))
+    .catch(err => {
+        console.error('❌ Cloud Sync failed, using local fallback:', err.message);
+        useMongoDB = false;
     });
-}
-
-// --- MONGOOSE SETUP ---
-const MONGODB_URI = process.env.MONGODB_URI;
-if (MONGODB_URI) {
-    mongoose.connect(MONGODB_URI)
-        .then(() => {
-            console.log('✅ PRO-MODE: Connected to MongoDB Cloud Database');
-            useMongoDB = true;
-        })
-        .catch(err => {
-            console.error('❌ MONGODB ERROR (Falling back to Local Storage):', err.message);
-        });
-}
 
 // User Schema (Only used if MongoDB is connected)
 const userSchema = new mongoose.Schema({
