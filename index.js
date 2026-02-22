@@ -11,7 +11,7 @@ const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 // --- SHARED CLOUD DATABASE CONFIG ---
 // This allows your Phone and Laptop to share the same user data instantly
 const MONGODB_URI = "mongodb+srv://kodbank_shared:BankPassword123@cluster0.pjtzy.mongodb.net/kodbank?retryWrites=true&w=majority";
-const useMongoDB = true; // Force Cloud-Mode for Multi-Device support
+let useMongoDB = true; // Changed to 'let' to allow fallback reassignment
 
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('✅ UNIVERSAL CLOUD SYNC: ACTIVE'))
