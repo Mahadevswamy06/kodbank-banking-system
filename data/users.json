@@ -1,0 +1,35 @@
+[
+  {
+    "username": "admin",
+    "password": "password123",
+    "fullname": "Demo Admin",
+    "email": "admin@kodbank.com",
+    "balance": 100000
+  },
+  {
+    "username": "videep",
+    "fullname": "Mahadev swamy",
+    "email": "vinayswamy052@gmail.com",
+    "password": "Videep@7676",
+    "phone": "917676452280",
+    "balance": 100000
+  },
+  {
+    "username": "vinay06",
+    "fullname": "mahadev swamy",
+    "email": "mahadevswamy082@gmail.com",
+    "password": "abcd1234",
+    "phone": "7676452280",
+    "balance": 100000,
+    "createdAt": "2026-02-22T18:39:32.894Z"
+  },
+  {
+    "username": "vinay18",
+    "fullname": "mahadev swamy",
+    "email": "mahadevswamy082@gmail.com",
+    "password": "abcd1234",
+    "phone": "7676452280",
+    "balance": 100000,
+    "createdAt": "2026-02-22T18:40:48.340Z"
+  }
+]

@@ -17,6 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
@@ -35,8 +38,14 @@ public class AuthController {
     private Long jwtExpiration;
 
     @GetMapping("/check-username")
-    public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
-        return ResponseEntity.ok(userService.findByUsername(username).isEmpty());
+    public ResponseEntity<?> checkUsername(@RequestParam String username) {
+        boolean available = userService.findByUsername(username).isEmpty();
+        Map<String, Object> response = new HashMap<>();
+        response.put("available", available);
+        if (!available) {
+            response.put("suggestions", userService.generateUsernameSuggestions(username));
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")

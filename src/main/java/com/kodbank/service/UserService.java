@@ -83,4 +83,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return transactionRepository.findByUser(user);
     }
+
+    public List<String> generateUsernameSuggestions(String username) {
+        return List.of(
+                username + (int) (Math.random() * 999),
+                username + "_kod",
+                username + "2026");
+    }
 }
