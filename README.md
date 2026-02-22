@@ -70,11 +70,7 @@
 
 ---
 
-## 📸 Screenshots
 
-*(Add your screenshots here to wow your visitors!)*
-
----
 
 ## 🤝 Contributing
 
