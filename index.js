@@ -80,7 +80,14 @@ async function saveNewUser(userData) {
         return await newUser.save();
     } else {
         usersMemory.push(userData);
-        fs.writeFileSync(USERS_FILE, JSON.stringify(usersMemory, null, 2));
+        try {
+            // Only try to write if we are NOT on Vercel (Local laptop)
+            if (process.env.NODE_ENV !== 'production') {
+                fs.writeFileSync(USERS_FILE, JSON.stringify(usersMemory, null, 2));
+            }
+        } catch (e) {
+            console.log("⚠️ Cloud Write Skipped: Connect MongoDB for permanent storage on phone.");
+        }
         return true;
     }
 }
