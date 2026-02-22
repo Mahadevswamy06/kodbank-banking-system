@@ -1,6 +1,7 @@
 {
   "name": "kodbank",
   "version": "1.0.0",
+  "description": "Professional banking system with cloud database, multi-device support, and responsive design.",
   "homepage": "https://kodbank-banking-system-22iq.vercel.app",
   "private": true,
   "scripts": {
