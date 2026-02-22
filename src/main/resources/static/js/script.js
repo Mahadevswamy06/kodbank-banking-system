@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => toast.remove(), 4000);
     };
 
-    // Automatic URL detection: Works on Localhost and Vercel automatically
-    const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const API_BASE = isDevelopment ? `http://${window.location.hostname}:9090` : window.location.origin;
+    // Final Absolute Sync: Relative paths ensure this works on any device, IP, or Cloud link
+    const API_BASE = '';
+    console.log("🏦 Kodbank Multi-Device Sync Active");
 
     // --- REGISTRATION LOGIC ---
     const registerForm = document.getElementById('register-form');
