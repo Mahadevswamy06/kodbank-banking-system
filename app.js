@@ -26,7 +26,8 @@ let useMySQL = true;
 
 async function connectDB() {
     if (!process.env.MYSQL_HOST) {
-        console.warn('⚠️ MYSQL_HOST not set, falling back to local storage.');
+        console.error('❌ CLOUD ERROR: MYSQL_HOST is not set in Vercel settings.');
+        console.warn('⚠️ Falling back to local/memory storage.');
         useMySQL = false;
         return;
     }
