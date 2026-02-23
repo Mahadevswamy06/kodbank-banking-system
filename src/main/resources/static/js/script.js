@@ -49,6 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const username = document.getElementById('username').value;
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -58,11 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const userData = {
-                username: e.target.username.value,
-                fullname: e.target.fullname.value,
-                email: e.target.email.value,
+                username: username,
+                fullname: fullname,
+                email: email,
                 password: password,
-                phone: e.target.phone.value
+                phone: phone
             };
 
             try {
@@ -90,9 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
             const loginData = {
-                username: e.target.username.value,
-                password: e.target.password.value
+                username: username,
+                password: password
             };
 
             try {

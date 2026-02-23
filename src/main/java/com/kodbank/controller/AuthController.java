@@ -50,21 +50,25 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
-        if (userService.findByUsername(request.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body("Username already exists");
+        try {
+            if (userService.findByUsername(request.getUsername()).isPresent()) {
+                return ResponseEntity.badRequest().body("Username already exists");
+            }
+
+            KodUser user = KodUser.builder()
+                    .username(request.getUsername())
+                    .fullname(request.getFullname())
+                    .email(request.getEmail())
+                    .password(request.getPassword())
+                    .phone(request.getPhone())
+                    .build();
+
+            userService.registerUser(user);
+
+            return ResponseEntity.ok("User registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
         }
-
-        KodUser user = KodUser.builder()
-                .username(request.getUsername())
-                .fullname(request.getFullname())
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .phone(request.getPhone())
-                .build();
-
-        userService.registerUser(user);
-
-        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
