@@ -6,17 +6,17 @@ A professional, responsive, and cloud-ready banking application designed for spe
 Visit the global application: **[kodbank-banking-system-22iq.vercel.app](https://kodbank-banking-system-22iq.vercel.app)**
 
 ## 🌟 Key Features
-- **Global Reach**: Works on any device with internet (Vercel Cloud).
-- **Multi-Device Sync**: Register on your phone, login on your laptop.
-- **Persistent Storage**: Data is saved permanently in a secure database.
+- **Global Reach**: 100% Independent (Vercel Cloud).
+- **Infinite Sync**: Register on any device, login on any other instantly.
+- **Permanent Cloud Storage**: Securely powered by **Aiven MySQL**.
 - **Responsive UI**: Sleek bottom-nav for mobile, Bento-grid for desktop.
-- **Real-time Validation**: Instantly checks if a User ID is available.
-- **Glassmorphism Design**: Modern, animated, and dark-themed interface.
+- **Security**: JWT-protected sessions and custom encryption keys.
+- **Real-time UX**: Instant ID availability checks and animated glassmorphism.
 
 ## 🛠️ Technology Stack
-- **Frontend**: HTML5, CSS3 (Mobile Optimized), Vanilla JavaScript.
-- **Backend**: Node.js, Express.
-- **Database**: Dual-mode (MongoDB Cloud + Local JSON Persistence).
+- **Frontend**: HTML5, Modern CSS3, Vanilla JavaScript.
+- **Backend**: Node.js & Express / Java Spring Boot (Hybrid Support).
+- **Database**: **Aiven Cloud MySQL** (Global Connectivity).
 - **Deployment**: Vercel & GitHub.
 
 ## 💻 Local Development
